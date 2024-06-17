@@ -17,13 +17,13 @@ const refs = {
 
 refs.loader.style.display = 'none';
 
-let request;
+let auto;
 
 refs.imageSearchForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    request = e.target.elements.userData.value;
+    auto = e.target.elements.userData.value;
 
-    if (request.trim() === '') {
+    if (auto.trim() === '') {
         refs.imageList.innerHTML = '';
         return iziToast.info({
             message: 'You need to enter search request!',
@@ -35,7 +35,7 @@ refs.imageSearchForm.addEventListener('submit', (e) => {
 const loader = document.querySelector('.loader')
         refs.loader.style.display = 'block';
 
-    getImages(request)
+    getImages(auto)
         .then(images => {
             if (images.hits.length === 0) {
                 refs.imageList.innerHTML = '';
