@@ -1,43 +1,35 @@
+import axios from "axios";
 const refs = {
 imageSearchForm: document.querySelector('.search-form'),
 imageSearchInput: document.querySelector('.search-input'),
 submitButton: document.querySelector('.search-btn'),
 imageList: document.querySelector('.images-list'),
+loader: document.querySelector('.loader'),
+more: document.querySelector('.more-button'),
+upBtn: document.querySelector('.up-button'),
 }
 
-export function getImages(auto) {
-    const BASE_URL = 'https://pixabay.com';
-    const END_POINT = '/api/';
-    const PARAMS = new URLSearchParams({
-        key: '44431585-8d368e0ee08bb3db1ccb0f280',
-        q: auto,
-        image_type: 'photo',
-        orientation: 'horizontal',
-        safesearch: true,
-        page: 1,
-        per_page: 30,
-    });
 
-    const url = `${BASE_URL}${END_POINT}?${PARAMS}`;
-    console.log(url);
+export async function getImages(query, page, per_page) {
+    try {
+        const imagesApi = axios.create({
+            baseURL: 'https://pixabay.com',
+        })
 
-    const options = {
-        headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Content - Type': 'application/json',
+        const res = await imagesApi.get('/api/', {
+            params: {
+                key: '44431585-8d368e0ee08bb3db1ccb0f280',
+                q: query,
+                image_type: 'photo',
+                orientation: 'horizontal',
+                safesearch: true,
+                page: page,
+                per_page: per_page,
+            }
+        })
 
-            'X-RateLimit-Limit': '100',
-            'X-RateLimit-Remaining': '99',
-            'X-RateLimit-Reset': '0.6',
-    },
-}
-
-    return fetch(url)
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw new Error(res.status);
-                      }
-        });
+        return res.data;
+    } catch (error) {
+        console.log(enterError('', 'api get error'));
+    };
 }

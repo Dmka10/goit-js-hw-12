@@ -3,12 +3,14 @@ imageSearchForm: document.querySelector('.search-form'),
 imageSearchInput: document.querySelector('.search-input'),
 submitButton: document.querySelector('.search-btn'),
 imageList: document.querySelector('.images-list'),
+loader: document.querySelector('.loader'),
+more: document.querySelector('.more-button'),
+upBtn: document.querySelector('.up-button'),
 }
 
-export function renderImages(images) {
-
-    const markup = images.hits.map((image) => {
-       return `<li class="images-list-item">
+function imagesTemplate(images) {
+  
+  return `<li class="images-list-item">
   <a class="img-link" href=${image.largeImageURL} onclick="event.preventDefault()"><img class="img" src=${image.webformatURL} alt=${image.tags}></img></a>
    <ul class="img-dscr">
       <li class="img-data">
@@ -29,7 +31,8 @@ export function renderImages(images) {
       </li>
     </ul>
 </li>`;
-    }).join('');
-
-    refs.imageList.innerHTML = markup;
 }
+
+    export function renderImages(images) {
+      return images.map(imagesTemplate).join('\n');   
+    }
