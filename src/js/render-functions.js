@@ -8,9 +8,9 @@ more: document.querySelector('.more-button'),
 upBtn: document.querySelector('.up-button'),
 }
 
-function imagesTemplate(images) {
-  
-  return `<li class="images-list-item">
+function imagesTemplate(image) {
+
+    return `<li class="images-list-item">
   <a class="img-link" href=${image.largeImageURL} onclick="event.preventDefault()"><img class="img" src=${image.webformatURL} alt=${image.tags}></img></a>
    <ul class="img-dscr">
       <li class="img-data">
@@ -31,8 +31,9 @@ function imagesTemplate(images) {
       </li>
     </ul>
 </li>`;
-}
-
+  }
+   
     export function renderImages(images) {
       return images.map(imagesTemplate).join('\n');   
     }
+   

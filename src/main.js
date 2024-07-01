@@ -97,6 +97,9 @@ refs.imageSearchForm.addEventListener('submit', async (e) => {
         });
     }
 
+    const markup = renderImages(data.hits);
+    refs.imageList.innerHTML = markup;
+    
     maxPage = Math.ceil(data.totatlHits / per_page);
 
     lightbox.refresh();
