@@ -59,7 +59,7 @@
 .images-list-item {
   display: flex;
   flex-direction: column;
-  width: calc((100% - 27px * 2) / 3);
+  width: calc((100% - 28px * 2) / 3);
   border: 1px solid #808080;
   transition: 1000ms;
 }
