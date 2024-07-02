@@ -6,16 +6,9 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 import { renderImages } from "./js/render-functions";
 import { getImages } from "./js/pixabay-api";
+import { refs } from "./js/refs";
 
-const refs = {
-    imageSearchForm: document.querySelector('.search-form'),
-    imageSearchInput: document.querySelector('.search-input'),
-    submitButton: document.querySelector('.search-btn'),
-    imageList: document.querySelector('.images-list'),
-    loader: document.querySelector('.loader'),
-    more: document.querySelector('.more-button'),
-    upBtn: document.querySelector('.up-button'),
-}
+
 const lightbox = new SimpleLightbox('.images-list-item a', {
     captions: true,
     captionSelector: 'img',
@@ -65,6 +58,8 @@ function checkScroll() {
             }
         }
 
+hideLoader();
+
 refs.imageSearchForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -72,6 +67,8 @@ refs.imageSearchForm.addEventListener('submit', async (e) => {
 
     if (!query) {
         refs.imageList.innerHTML = '';
+        hideLoader();
+        hideMoreBtn();
         return iziToast.info({  
             message: 'You need to enter search request!',
             position: 'topRight',
@@ -83,12 +80,15 @@ refs.imageSearchForm.addEventListener('submit', async (e) => {
     showLoader();
     hideMoreBtn();
 
+    page = 1;
+
     const loader = document.querySelector('.loader')
     refs.loader.style.display = 'block';
 
     const data = await getImages(query, page, per_page);
     if (data.hits.length === 0) {
         refs.imageList.innerHTML = '';
+        hideLoader();
         return iziToast.error({
             message: 'Sorry, there are no images matching your search query. Please try again!',
             position: 'topRight',
@@ -97,10 +97,11 @@ refs.imageSearchForm.addEventListener('submit', async (e) => {
         });
     }
 
+    
     const markup = renderImages(data.hits);
     refs.imageList.innerHTML = markup;
     
-    maxPage = Math.ceil(data.totatlHits / per_page);
+    maxPage = Math.ceil(data.totalHits / per_page);
 
     lightbox.refresh();
 
@@ -111,7 +112,7 @@ refs.imageSearchForm.addEventListener('submit', async (e) => {
     
     });
 
-    refs.more.addEventListener('click', async () => {
+refs.more.addEventListener('click', async () => {
     page++;  
     showLoader();
     hideMoreBtn();   
